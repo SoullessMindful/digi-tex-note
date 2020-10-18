@@ -29,7 +29,7 @@ interface NewLine {
   type: "Newline"
 }
 
-interface Paragraph {
+export interface Paragraph {
   type: 'Paragraph'
   value: Array<Text | InlineTeXData>
 }
@@ -40,7 +40,7 @@ const newLine: NewLine = {
 
 type FirstPhaseTeXData = Character | InlineTeXData | DisplayTeXData
 type SecondPhaseTeXData = Text | NewLine | InlineTeXData | DisplayTeXData
-type ThirdPhaseTeXData = Paragraph | DisplayTeXData
+export type ThirdPhaseTeXData = Paragraph | DisplayTeXData
 
 const characterParser = regexpMatch(/^.|\n/)
   .map((match) => ({

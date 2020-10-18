@@ -69,7 +69,7 @@ export const Notebook: FunctionComponent<NotebookProps> = ({
         setData={setTitle}
       /></StyledH>
           {
-            sections.map((section, i) => (<Fragment>
+            sections.map((section, i) => (<Fragment key={`section-${i}`}>
               <AddButton onClick={addSectionData(i)}/>
               <Section
                 data={section}

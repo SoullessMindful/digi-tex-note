@@ -28,9 +28,9 @@ export const DisplayTeX: FunctionComponent<TeXProps> = ({code}) => {
 export const TextParagraph: FunctionComponent<ParagraphProps> = ({paragraphData}) => {
 
   return <p>
-    {paragraphData.value.map((el) => (
+    {paragraphData.value.map((el, i) => (
       el.type === 'InlineTeX' ?
-        <InlineTeX code={el.value}/> :
+        <InlineTeX key={`inline-tex-${i}`} code={el.value}/> :
         el.value
     ))}
   </p>
@@ -42,10 +42,10 @@ export const TeX: FunctionComponent<TeXProps> = ({code}) => {
   const parsedTeX = parseTeX(code)
 
   return <div className="tex">
-    {parsedTeX.map((el) => (
+    {parsedTeX.map((el, i) => (
       el.type === 'DisplayTeX' ?
-        <DisplayTeX code={el.value} /> :
-        <TextParagraph paragraphData={el} />
+        <DisplayTeX key={`display-tex-${i}`} code={el.value} /> :
+        <TextParagraph key={`text-paragraph-${i}`} paragraphData={el} />
     ))}
   </div>
 }

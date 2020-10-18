@@ -80,7 +80,7 @@ export const Section: FunctionComponent<SectionProps> = ({
       <DeleteButton onClick={deleteData}/>
     </StyledH>
     {
-      blocks.map((block, i) => (<Fragment>
+      blocks.map((block, i) => (<Fragment key={`block-${i}`}>
         <AddButton onClick={addBlockData(i)} />
         <Block
           data={block}

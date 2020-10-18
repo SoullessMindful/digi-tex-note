@@ -7,8 +7,10 @@ const StyledTextBox = styled.input`
   width: 100%;
   text-align: center;
   display: inline-block;
-  background-color: transparent;
+  background-color:  hsl(220, 13%, 22%);
   color: white;
+  border: none;
+  border-radius: 0.2rem;
   
   &:focus {
     background-color: white;

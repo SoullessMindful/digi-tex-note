@@ -23,11 +23,13 @@ const StyledH = styled.h2`
 interface NotebookProps {
   data: NotebookData
   setData: (data: NotebookData) => void
+  showCode?: boolean
 }
 
 export const Notebook: FunctionComponent<NotebookProps> = ({
   data,
-  setData
+  setData,
+  showCode
 }) => {
   const { title, sections } = data
 
@@ -75,6 +77,7 @@ export const Notebook: FunctionComponent<NotebookProps> = ({
                 data={section}
                 setData={setSectionData(i)}
                 deleteData={deleteSectionData(i)}
+                showCode={showCode}
               />
             </Fragment>))
           }

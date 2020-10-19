@@ -31,12 +31,14 @@ interface SectionProps {
   data: SectionData
   setData: (data: SectionData) => void
   deleteData: () => void
+  showCode?: boolean
 }
 
 export const Section: FunctionComponent<SectionProps> = ({
   data,
   setData,
-  deleteData
+  deleteData,
+  showCode
 }) => {
   const { header, blocks } = data
 
@@ -86,6 +88,7 @@ export const Section: FunctionComponent<SectionProps> = ({
           data={block}
           setData={setBlockData(i)}
           deleteData={deleteBlockData(i)}
+          showCode={showCode}
         />
       </Fragment>))
     }

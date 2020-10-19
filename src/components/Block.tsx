@@ -4,7 +4,11 @@ import { BlockData } from "../models/NotebookData"
 import { DeleteButton } from "./utils/DeleteButton"
 import { TeX } from "./Tex"
 
-const StyledBlock = styled.div`
+interface ShowCode {
+  showCode?: boolean
+}
+
+const StyledBlock = styled.div<ShowCode>`
   font-size: 0.75rem;
   display: flex;
   flex-direction: row;
@@ -15,7 +19,7 @@ const StyledBlock = styled.div`
 
   &>* {
     min-height: 200px;
-    width: 45%;
+    width: ${({showCode}) => (showCode ?? true) ? '45%' : '90%'};
     color: black;
     text-align: left;
   }
@@ -44,8 +48,9 @@ const StyledBlock = styled.div`
   }
 `
 
-const StyledCode = styled.span`
+const StyledCode = styled.span<ShowCode>`
   position: relative;
+  ${(p) => (p.showCode ?? true) ? '' : 'display: none;'}
 `
 
 const StyledBar = styled.div`
@@ -65,12 +70,14 @@ interface BlockProps {
   data: BlockData
   setData: (data: BlockData) => void
   deleteData: () => void
+  showCode?: boolean
 }
 
 export const Block: FunctionComponent<BlockProps> = ({
   data,
   setData,
-  deleteData
+  deleteData,
+  showCode
 }) => {
   const { code } = data
 
@@ -86,8 +93,8 @@ export const Block: FunctionComponent<BlockProps> = ({
   }
 
   return (
-    <StyledBlock>
-      <StyledCode>
+    <StyledBlock showCode={showCode}>
+      <StyledCode showCode={showCode}>
         <StyledBar>
           <DeleteButton onClick={deleteData} inverted/>
         </StyledBar>

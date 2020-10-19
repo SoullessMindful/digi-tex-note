@@ -16,6 +16,11 @@ nav {
   border-bottom: 1px solid hsl(0, 0%, 50%);
   display: flex;
   justify-content: space-between;
+  font-size: 0.8rem;
+}
+
+nav > div {
+  display: flex;
 }
 
 nav header h1 {

@@ -1,106 +1,97 @@
-import React, { FunctionComponent, FormEvent } from "react"
-import styled from 'styled-components'
-import { BlockData } from "../models/NotebookData"
-import { DeleteButton } from "./utils/DeleteButton"
-import { TeX } from "./Tex"
+import React, { FunctionComponent, useEffect, useState } from "react"
+import styled from "styled-components"
+import { BlockData, emptyBlockData, emptyImgBlockData } from "../models/NotebookData"
+import { ImgBlock } from "./ImgBlock"
+import { TeXBlock } from "./TeXBlock"
 
-interface ShowCode {
+export interface ShowCode {
   showCode?: boolean
 }
 
-const StyledBlock = styled.div<ShowCode>`
-  font-size: 0.75rem;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-content: stretch;
-  width: 100%;
-  margin: 0.5rem 0;
-
-  &>* {
-    min-height: 200px;
-    width: ${({showCode}) => (showCode ?? true) ? '45%' : '90%'};
-    color: black;
-    text-align: left;
-  }
-
-  &>.tex {
-    background-color: white;
-    padding: 0.5rem;
-    border-radius: 0.2rem;
-  }
-
-  textarea {
-    font-size: inherit;
-    background-color: white;
-    width: 100%;
-    height: 100%;
-    padding: 0.5rem;
-    padding-top: calc(0.5rem + 1em);
-    border: 2px solid hsl(0, 0%, 50%);
-    resize: none;
-    outline: none;
-    border-radius: 0.2rem;
-  }
-
-  textarea:focus {
-    border: 2px solid hsl(210, 100%, 50%);
-  }
-`
-
-const StyledCode = styled.span<ShowCode>`
-  position: relative;
-  ${(p) => (p.showCode ?? true) ? '' : 'display: none;'}
-`
-
-const StyledBar = styled.div`
+export const StyledBar = styled.div`
   position: absolute;
   width: 100%;
-  height: 1em;
+  height: 0.75rem;
   top: 0;
   left: 0;
   padding: 2px 2px 0 2px;
 
-  .btn-delete {
-    float: right;
+  &>* {
+    height: 0.75rem;
   }
 `
 
-interface BlockProps {
-  data: BlockData
+export const FloatLeft = styled.span`
+  float: left;
+  display: flex;
+  & > div {
+    margin-right: 1rem;
+  }
+`
+
+export const FloatRight = styled.span`
+  float: right;
+`
+
+
+export interface BlockProps<T extends BlockData> {
+  data: T
   setData: (data: BlockData) => void
   deleteData: () => void
   showCode?: boolean
 }
 
-export const Block: FunctionComponent<BlockProps> = ({
+export type BlockType = 'tex' | 'img'
+
+export interface BlockTypeProps {
+  type: BlockType,
+  setType: (type: BlockType) => void,
+}
+
+export const Block: FunctionComponent<BlockProps<BlockData>> = ({
   data,
   setData,
   deleteData,
   showCode
 }) => {
-  const { code } = data
+  const [type, setType] = useState(data.type)
 
-  const setCode: (newCode: string) => void
-    = (newCode) => setData({
-      ...data,
-      code: newCode
-    })
-
-  const onTextAreaInput = (ev: FormEvent<HTMLTextAreaElement>) => {
-    const textArea = ev.target as HTMLTextAreaElement
-    setCode(textArea.value)
+  const setTypeExt = (newType: BlockType) => {
+    if (newType !== data.type) {
+      switch (newType) {
+        case 'tex':
+          setData(emptyBlockData())
+          break
+        case 'img':
+          setData(emptyImgBlockData())
+          break
+      }
+    }
   }
 
-  return (
-    <StyledBlock showCode={showCode}>
-      <StyledCode showCode={showCode}>
-        <StyledBar>
-          <DeleteButton onClick={deleteData} inverted/>
-        </StyledBar>
-        <textarea value={code} onChange={(onTextAreaInput)}></textarea>
-      </StyledCode>
-      <TeX code={code}/>
-    </StyledBlock>
-  )
+  useEffect(() => {
+    if (type !== data.type) {
+      setType(data.type)
+    }
+  }, [data, type])
+
+  switch (data.type) {
+    case 'tex':
+      return <TeXBlock
+        data={data}
+        setData={setData}
+        deleteData={deleteData}
+        showCode={showCode}
+        type={type}
+        setType={setTypeExt}
+      />
+    case 'img':
+      return <ImgBlock
+        data={data}
+        setData={setData}
+        deleteData={deleteData}
+        type={type}
+        setType={setTypeExt}
+      />
+  }
 }

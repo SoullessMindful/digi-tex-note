@@ -1,6 +1,6 @@
 import React, { Fragment, FunctionComponent } from 'react'
 import styled from 'styled-components'
-import { EMPTY_SECTION_DATA, NotebookData, SectionData } from '../models/NotebookData'
+import { emptySectionData, NotebookData, SectionData } from '../models/NotebookData'
 import { addArrayMember, deleteArrayMember, setArrayMember } from '../utils/dataUtils'
 import { AddButton } from './utils/AddButton'
 import { Section } from './Section'
@@ -50,7 +50,7 @@ export const Notebook: FunctionComponent<NotebookProps> = ({
       ...data,
       sections: addArrayMember(
         sections,
-        EMPTY_SECTION_DATA,
+        emptySectionData(),
         i
       )
     })
@@ -71,7 +71,7 @@ export const Notebook: FunctionComponent<NotebookProps> = ({
         setData={setTitle}
       /></StyledH>
           {
-            sections.map((section, i) => (<Fragment key={`section-${i}`}>
+            sections.map((section, i) => (<Fragment key={`section-${section.uuid}`}>
               <AddButton onClick={addSectionData(i)}/>
               <Section
                 data={section}

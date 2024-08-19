@@ -1,6 +1,6 @@
 import React, { Fragment, FunctionComponent } from 'react'
 import styled from 'styled-components'
-import { BlockData, EMPTY_BLOCK_DATA, SectionData } from '../models/NotebookData'
+import { BlockData, emptyBlockData, SectionData } from '../models/NotebookData'
 import { addArrayMember, deleteArrayMember, setArrayMember } from '../utils/dataUtils'
 import { AddButton } from './utils/AddButton'
 import { Block } from './Block'
@@ -59,7 +59,7 @@ export const Section: FunctionComponent<SectionProps> = ({
       ...data,
       blocks: addArrayMember(
         blocks,
-        EMPTY_BLOCK_DATA,
+        emptyBlockData(),
         i
       )
     })
@@ -82,7 +82,7 @@ export const Section: FunctionComponent<SectionProps> = ({
       <DeleteButton onClick={deleteData}/>
     </StyledH>
     {
-      blocks.map((block, i) => (<Fragment key={`block-${i}`}>
+      blocks.map((block, i) => (<Fragment key={`block-${block.uuid}`}>
         <AddButton onClick={addBlockData(i)} />
         <Block
           data={block}
